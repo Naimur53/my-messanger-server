@@ -101,18 +101,6 @@ async function run() {
         app.post('/chat', async (req, res) => {
             const data = req.body;
             data.room = parseInt(data.room);
-            const pic = req?.files?.pic;
-            const picData = pic?.data;
-            if (picData) {
-                const encodedPic = picData.toString('base64');
-                const imageBuffer = Buffer.from(encodedPic, 'base64');
-                data.pic = imageBuffer.toString('base64');
-            }
-            else {
-                delete data.pic;
-            }
-            console.log(data);
-
             const result = await chatCollection.insertOne(data);
             res.json(result)
 
