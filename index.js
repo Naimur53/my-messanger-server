@@ -28,16 +28,23 @@ io.on('connection', (socket) => {
     socket.on('join', id => {
         console.log('Joining ', id);
         socket.join(id);
+
     });
     socket.on('leave', id => {
         console.log('leave', id);
         socket.leave(id);
     });
     socket.on('message', msg => {
-        console.log('seend only', msg.room);
         socket.to(msg.room).emit('receive_message', msg);
         // socket.broadcast.emit('message', msg)
     });
+    socket.on('checkActive', id => {
+        socket.to(id).emit('isActive', id);
+    })
+    socket.on('activeUser', user => {
+
+        socket.broadcast.emit('receive_activeUser', user)
+    })
     // socket.on('say to someone', (id, msg) => {
     //     socket.to(id).emit('my message', msg);
     //     console.log('person', id, msg);
